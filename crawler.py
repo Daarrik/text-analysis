@@ -9,6 +9,12 @@ text_file = open('p_tags.txt', 'a', encoding='utf-8')
 links_to_crawl = []
 crawled_links = []
 
+def crawl_next_link(remove_last: bool):
+  if remove_last: crawled_links.pop()
+  new_url = links_to_crawl.pop(0)
+  crawled_links.append(new_url)
+  crawl(new_url)
+
 def get_outlinks(links, url):
   outlinks = set()
   for link in links:
@@ -29,9 +35,9 @@ def crawl(url):
   p_tags = soup('p')
   try:
     if translator.detect(p_tags[0].getText()).lang != 'en':
-      crawl(links_to_crawl.pop(0))
+      crawl_next_link(remove_last=True)
   except:
-      crawl(links_to_crawl.pop(0))
+      crawl_next_link(remove_last=True)
 
   for p in p_tags:
     text_file.write(p.getText())
@@ -42,9 +48,7 @@ def crawl(url):
     [outlink for outlink in outlinks if outlink not in links_to_crawl and outlink not in crawled_links]
   )
   if len(crawled_links) < 10:
-    new_url = links_to_crawl.pop(0)
-    crawled_links.append(new_url)
-    crawl(new_url)
+    crawl_next_link(remove_last=False)
 
 def main():
   seed = 'https://en.wikipedia.org/'

@@ -1,6 +1,7 @@
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 from string import ascii_letters
 from collections import Counter
+from math import log10
 
 def get_word_list():
   text = open('p_tags.txt', 'r', encoding='utf-8').read()
@@ -15,8 +16,17 @@ def get_word_list():
 
 
 def main():
-  word_count = Counter(get_word_list())
-  print(word_count.most_common(100))
+  # Web crawl plot
+  most_common_words = Counter(get_word_list()).most_common()
+  rank = [log10(x) for x in range(1, len(most_common_words)+1)]
+  freq = [log10(word[1]) for word in most_common_words]
+  plt.plot(rank, freq)
+
+  # Rough Zipf's Law reference plot
+  zipf_rank = [log10(1), log10(len(most_common_words)-1)]
+  zipf_freq = [log10(most_common_words[0][1]), log10(most_common_words[-1][1])]
+  plt.plot(zipf_rank, zipf_freq)
+  plt.show()
 
 if __name__ == '__main__':
   main()

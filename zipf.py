@@ -25,7 +25,9 @@ def main():
   # Rough Zipf's Law reference plot
   zipf_rank = [log10(1), log10(len(most_common_words)-1)]
   zipf_freq = [log10(most_common_words[0][1]), log10(most_common_words[-1][1])]
-  plt.plot(zipf_rank, zipf_freq)
+  plt.plot(zipf_rank, zipf_freq, color='gray', alpha=0.4)
+
+  plt.legend(['Zipf\'s Law from Web Crawl', 'Expected line'])
   plt.show()
 
 if __name__ == '__main__':

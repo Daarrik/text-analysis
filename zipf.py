@@ -5,7 +5,7 @@ from math import log10
 
 def get_word_list():
   text = open('p_tags.txt', 'r', encoding='utf-8').read()
-  lines = text.split('\n')  # necessary for splitting words at beginning and end of new lines @
+  lines = text.split('\n')  # necessary for splitting words at beginning and end of new lines
   transformed_text = ''
   for line in lines:
     transformed_text += ''.join(c for c in line if c in ascii_letters+' ').lower()

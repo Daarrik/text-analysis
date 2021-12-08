@@ -21,7 +21,6 @@ def get_outlinks(links, url):
   outlinks = set()
   for link in links:
     try:
-      outlink = urljoin(url, link['href'])
       outlinks.add(urljoin(url, link['href']))
     except:
       print('Error joining URL')

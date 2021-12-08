@@ -36,6 +36,7 @@ def crawl(url):
   soup = BeautifulSoup(req.text, 'html.parser')
   p_tags = soup('p')
   try:  # crawl next link if language isn't english or can't detect language
+    # doesn't check if p_tags[0].get_text() == '' but it probably should. oh well!
     if translator.detect(p_tags[0].get_text()).lang != 'en':
       crawl_next_link(remove_last=True)
   except:

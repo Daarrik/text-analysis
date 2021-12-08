@@ -10,6 +10,7 @@ translator = Translator()
 text_file = open('p_tags.txt', 'a', encoding='utf-8')
 links_to_crawl = []
 crawled_links = []
+MAX_LINKS = 10
 
 def crawl_next_link(remove_last: bool):
   if remove_last: crawled_links.pop()
@@ -48,7 +49,7 @@ def crawl(url):
   links_to_crawl.extend(
     [outlink for outlink in outlinks if outlink not in links_to_crawl and outlink not in crawled_links]
   )
-  if len(crawled_links) < 10: # max number of links to get p tags from
+  if len(crawled_links) < MAX_LINKS:
     crawl_next_link(remove_last=False)
 
 def main():

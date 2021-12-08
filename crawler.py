@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+# might have to do "pip install googletrans==3.1.0a0"
+# "if pip install googletrans" doesn't work
 from googletrans import Translator
 
 # Defining global variables
@@ -33,7 +35,7 @@ def crawl(url):
 
   soup = BeautifulSoup(req.text, 'html.parser')
   p_tags = soup('p')
-  try:
+  try:  # crawl next link if language isn't english or can't detect language
     if translator.detect(p_tags[0].get_text()).lang != 'en':
       crawl_next_link(remove_last=True)
   except:

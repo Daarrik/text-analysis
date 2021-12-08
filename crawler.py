@@ -34,13 +34,13 @@ def crawl(url):
   soup = BeautifulSoup(req.text, 'html.parser')
   p_tags = soup('p')
   try:
-    if translator.detect(p_tags[0].getText()).lang != 'en':
+    if translator.detect(p_tags[0].get_text()).lang != 'en':
       crawl_next_link(remove_last=True)
   except:
       crawl_next_link(remove_last=True)
 
   for p in p_tags:
-    text_file.write(p.getText())
+    text_file.write(p.get_text())
 
   outlinks = get_outlinks(soup('a', limit=10), url)
   # LOL

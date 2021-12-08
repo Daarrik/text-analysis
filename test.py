@@ -1,10 +1,4 @@
-from googletrans import Translator
-from urllib.parse import urljoin
+asdf = ['a', 'b']
+asdf2 = []
 
-base = 'https://en.wikipedia.org/wiki/Yugoslav_gunboat_Beli_Orao'
-sub = '/wiki/Galeb-class_minelayer'
-print(urljoin(base, sub))
-
-
-translator = Translator()
-print(translator.detect('test').lang)
+print('c' not in asdf and 'c' not in asdf2)

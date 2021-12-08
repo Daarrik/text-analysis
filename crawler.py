@@ -1,3 +1,4 @@
+from re import L
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -6,17 +7,14 @@ from googletrans import Translator
 # Defining global variables
 translator = Translator()
 text_file = open('p_tags.txt', 'a', encoding='utf-8')
-all_links = set()
-
-def check_language(url):
-  translator.detect()
+links_to_crawl = []
+crawled_links = []
 
 def get_outlinks(links, url):
   outlinks = set()
   for link in links:
     try:
       outlink = urljoin(url, link['href'])
-      check_language()
       outlinks.add(urljoin(url, link['href']))
     except:
       print('Error joining URL')
@@ -27,17 +25,30 @@ def crawl(url):
     req = requests.get(url)
   except:
     print(f'An error occured trying to crawl {url}')
-    crawl(all_links.pop(0))
 
   soup = BeautifulSoup(req.text, 'html.parser')
   p_tags = soup('p')
-  for p in soup('p'):
+  try:
+    if translator.detect(p_tags[0].getText()).lang != 'en':
+      crawl(links_to_crawl.pop(0))
+  except:
+      crawl(links_to_crawl.pop(0))
+
+  for p in p_tags:
     text_file.write(p.getText())
-  outlinks = get_outlinks(soup('a'), url)
-  
-  
+
+  outlinks = get_outlinks(soup('a', limit=10), url)
+  # LOL
+  links_to_crawl.extend(
+    [outlink for outlink in outlinks if outlink not in links_to_crawl and outlink not in crawled_links]
+  )
+  if len(crawled_links) < 10:
+    new_url = links_to_crawl.pop(0)
+    crawled_links.append(new_url)
+    crawl(new_url)
+
 def main():
-  seed = 'https://en.wikipedia.org/wiki/Yugoslav_gunboat_Beli_Orao'
+  seed = 'https://en.wikipedia.org/'
   crawl(seed)
 
 if __name__ == '__main__':

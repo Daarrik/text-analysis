@@ -47,7 +47,7 @@ def crawl(url):
   links_to_crawl.extend(
     [outlink for outlink in outlinks if outlink not in links_to_crawl and outlink not in crawled_links]
   )
-  if len(crawled_links) < 10:
+  if len(crawled_links) < 10: # max number of links to get p tags from
     crawl_next_link(remove_last=False)
 
 def main():
